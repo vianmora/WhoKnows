@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import model.Article;
+import model.LecteurFlux;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
         ListView mArticlesListView = findViewById(R.id.main_articles_listview);
 
-        String S = "Title";
+        /*String S = "Title";
         String SS = "description";
 
         Article A1 = new Article();
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         flux.add(A3);
 
 
-        List<HashMap<String, String>> liste = new ArrayList<>();
+        List<HashMap<String, String>> mArticleList = new ArrayList<>();
 
         HashMap<String, String> hashMap;
 
@@ -55,16 +56,19 @@ public class MainActivity extends AppCompatActivity {
 
             hashMap.put("title", flux.get(i).getTitle());
             hashMap.put("description", flux.get(i).getDescription());
-            liste.add(hashMap);
-        }
+            mArticleList.add(hashMap);
+        }*/
+
+        LecteurFlux lecteurFlux = new LecteurFlux();
+        List<HashMap<String, String>> mArticleList = lecteurFlux.getFluxList();
 
         ListAdapter adapter = new SimpleAdapter(
-                this,
-                liste,
-                android.R.layout.simple_list_item_2,
-                new String[] {"title", "description"},
-                new int[] {android.R.id.text1, android.R.id.text2 }
-                );
+        this,
+        mArticleList,
+        android.R.layout.simple_list_item_2,
+        new String[] {"title", "description"},
+        new int[] {android.R.id.text1, android.R.id.text2 }
+        );
 
         mArticlesListView.setAdapter(adapter);
 
