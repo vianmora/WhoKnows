@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">WhoKnows2</string>
+    <string name="title">WhoKnows</string>
+
 </resources>
