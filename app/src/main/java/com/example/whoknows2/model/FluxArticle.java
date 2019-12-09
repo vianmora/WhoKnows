@@ -5,6 +5,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class FluxArticle {
 
@@ -60,5 +61,23 @@ public class FluxArticle {
 
         }
 
+    }
+
+    public ArrayList<HashMap<String, String>> get_FluxListMap () {
+
+        ArrayList<HashMap<String, String>> fluxListMap = new ArrayList<HashMap<String, String>>();
+
+        for (int i = 0; i < _totalResult; i++) {
+
+
+            HashMap<String, String> map = new HashMap<>();
+
+            map.put("id", String.valueOf(i));
+            map.put("title", _articlesArray.get(i).getTitle());
+            map.put("description", _articlesArray.get(i).getDescription());
+            fluxListMap.add(map);
+        }
+
+        return fluxListMap;
     }
 }

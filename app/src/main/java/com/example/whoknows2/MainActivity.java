@@ -4,7 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.android.volley.Cache;
@@ -28,6 +31,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import com.example.whoknows2.model.Article;
 import com.example.whoknows2.model.FluxArticle;
@@ -41,7 +46,8 @@ public class MainActivity extends AppCompatActivity {
     /* Views */
 
     private TextView JSONString;
-    private ProgressBar mProgressBar;
+    private ListView mFluxListView;
+
 
     /* variables */
     private LecteurFluxAsync mLecteurFlux;
@@ -61,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
 
         mCurrentFlux = new FluxArticle();
 
+
+
         mRequestQueue = Singleton.getInstance(this.getApplicationContext()).getRequestQueue();
 
         JsonObjectRequest jr = new JsonObjectRequest(
@@ -72,15 +80,26 @@ public class MainActivity extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
 
                         setContentView(R.layout.activity_flux);
+
                         JSONString = (TextView) findViewById(R.id.main_JSONtxt);
+                        mFluxListView = (ListView) findViewById(R.id.main_articles_listview);
 
                         try {
                             mCurrentFlux.set_status(response.getString("status"));
                             mCurrentFlux.set_totalResult(response.getInt("totalResults"));
 
+                           /* Log.d("MON TAG", "avant list");
                             mCurrentFlux.fillArticlesArrayWhithJSONArray(response.getJSONArray("articles"));
+                            Log.d("MON TAG", "après list");
 
+                            ListAdapter adapter = new SimpleAdapter(
+                                    getApplicationContext(),
+                                    mCurrentFlux.get_FluxListMap(),
+                                    R.layout.activity_flux,
+                                    new String[] { "title", "description" },
+                                    new int[] { R.id.activity_flux_title_txt, R.id.activity_flux_descriptionItem_txt });
 
+                            mFluxListView.setAdapter(adapter);*/
 
                             JSONString.setText("reponse :" + mCurrentFlux.get_articlesArray().get(0).getTitle());
 
