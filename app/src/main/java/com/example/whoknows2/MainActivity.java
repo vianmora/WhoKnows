@@ -80,8 +80,6 @@ public class MainActivity extends AppCompatActivity {
 
                             mCurrentFlux.fillArticlesArrayWhithJSONArray(response.getJSONArray("articles"));
 
-
-
                             JSONString.setText("reponse :" + mCurrentFlux.get_articlesArray().get(0).getTitle());
 
                         } catch (JSONException e) {
