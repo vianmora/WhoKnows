@@ -1,4 +1,6 @@
-package com.example.whoknows2.model;
+package com.example.whoknows2.models;
+
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,6 +37,10 @@ public class FluxArticle {
         this._totalResult = _totalResult;
     }
 
+    public void set_articlesArray(ArrayList<Article> _articlesArray) {
+        this._articlesArray = _articlesArray;
+    }
+
     public ArrayList<Article> get_articlesArray() {
         return _articlesArray;
     }
@@ -60,24 +66,5 @@ public class FluxArticle {
             _articlesArray.add(article);
 
         }
-
-    }
-
-    public ArrayList<HashMap<String, String>> get_FluxListMap () {
-
-        ArrayList<HashMap<String, String>> fluxListMap = new ArrayList<HashMap<String, String>>();
-
-        for (int i = 0; i < _totalResult; i++) {
-
-
-            HashMap<String, String> map = new HashMap<>();
-
-            map.put("id", String.valueOf(i));
-            map.put("title", _articlesArray.get(i).getTitle());
-            map.put("description", _articlesArray.get(i).getDescription());
-            fluxListMap.add(map);
-        }
-
-        return fluxListMap;
     }
 }

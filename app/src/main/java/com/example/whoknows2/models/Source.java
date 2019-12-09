@@ -1,4 +1,4 @@
-package com.example.whoknows2.model;
+package com.example.whoknows2.models;
 
 public class Source {
     private String id;

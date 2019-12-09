@@ -1,30 +1,16 @@
-package com.example.whoknows2.model;
+package com.example.whoknows2.models;
 
 import android.os.AsyncTask;
-import android.util.Log;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.whoknows2.R;
+import com.example.whoknows2.utils.Singleton;
 
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 
 import static android.os.FileUtils.copy;
-import static com.example.whoknows2.model.Singleton.getInstance;
 
 public class LecteurFluxAsync extends AsyncTask<String, Void, JSONArray> {
 
