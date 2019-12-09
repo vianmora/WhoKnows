@@ -2,7 +2,7 @@ package com.example.whoknows2;
 
 import org.junit.Test;
 
-import model.Article;
+import com.example.whoknows2.model.Article;
 
 public class ArticleTest {
 

@@ -1,4 +1,4 @@
-package model;
+package com.example.whoknows2.model;
 
 public class Article {
 
