@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import com.example.whoknows2.model.Article;
+import com.example.whoknows2.model.FluxArticle;
 import com.example.whoknows2.model.LecteurFluxAsync;
 import com.example.whoknows2.model.Singleton;
 
@@ -47,8 +48,8 @@ public class MainActivity extends AppCompatActivity {
 
     private String mArticles = "Articles.JSON";
     private File mArticlesFile;
-    private String affiche_text = "hey";
-    private String mUrlSources_str = "https://newsapi.org/v2/sources?apiKey=d31f5fa5f03443dd8a1b9e3fde92ec34&language=fr";
+    private FluxArticle mCurrentFlux;
+    private String mUrlSources_str = "http://newsapi.org/v2/sources?apiKey=d31f5fa5f03443dd8a1b9e3fde92ec34&language=fr";
     private String mUrlFlux_str = "http://newsapi.org/v2/everything?apiKey=d31f5fa5f03443dd8a1b9e3fde92ec34&language=fr&sources=google-news-fr";
 
     @Override
@@ -56,10 +57,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /*LecteurFluxAsync mLecteurFluxAsync = new LecteurFluxAsync(this);
-        mLecteurFluxAsync.execute(mUrlFlux_str, "articles");
-*/
-        mRequestQueue = getInstance(this.getApplicationContext()).getRequestQueue();
+        mCurrentFlux = new FluxArticle();
+
+        mRequestQueue = Singleton.getInstance(this.getApplicationContext()).getRequestQueue();
 
         JsonObjectRequest jr = new JsonObjectRequest(
                 Request.Method.GET,
@@ -69,62 +69,35 @@ public class MainActivity extends AppCompatActivity {
 
                     public void onResponse(JSONObject response) {
 
-                        ArrayList<Article> flux = new ArrayList<>();
-                        JSONArray articlesJSONArray = null;
-
+                        setContentView(R.layout.activity_flux);
+                        JSONString = (TextView) findViewById(R.id.main_JSONtxt);
 
                         try {
-                            articlesJSONArray = new JSONArray(response.getString("articles"));
+                            mCurrentFlux.set_status(response.getString("status"));
+                            mCurrentFlux.set_totalResult(response.getInt("totalResults"));
 
-                            for (int i = 0; i < articlesJSONArray.length(); i++) {
+                            mCurrentFlux.fillArticlesArrayWhithJSONArray(response.getJSONArray("articles"));
 
-                                JSONObject obj = new JSONObject(articlesJSONArray.getString(i));
-                                // On fait le lien Article - Objet JSON
-                                Article article = new Article();
-
-                                article.setId(obj.getString("id"));
-                                article.setName(obj.getString("name"));
-                                //article.setAuthor(obj.getString("author"));
-                                article.setTitle(obj.getString("title"));
-                                article.setDescription(obj.getString("descrition"));
-                                article.setUrl(obj.getString("url"));
-                                //article.setUrlToImage(obj.getString("urlToImage"));
-                                article.setPublishedAt(obj.getString("publishedAt"));
-                                //article.setContent(obj.getString("content"));
-
-                                // On ajoute l'article au flux
-                                flux.add(article);
-                            }
-
-                            affiche_text = "Response: " + flux.get(0).getAuthor();
-
-
+                            JSONString.setText("reponse :" + mCurrentFlux.get_articlesArray().get(0).getTitle());
 
                         } catch (JSONException e) {
                             e.printStackTrace();
-
-                            affiche_text = e.getMessage();
+                            JSONString.setText("reponse :" );
                         }
 
 
 
-
-                    }
+                        }
                 },
                 new Response.ErrorListener() {
                     public void onErrorResponse(VolleyError error) {
                         Log.d("probleme de réponse", error.getMessage());
                         error.getStackTrace();
 
-                        affiche_text = "Response: " + error.getMessage();
                     }
                 });
 
-        getInstance(this).addToRequestQueue(jr);
-
-        setContentView(R.layout.activity_flux);
-        JSONString = (TextView) findViewById(R.id.main_JSONtxt);
-        JSONString.setText(affiche_text);
+        Singleton.getInstance(this).addToRequestQueue(jr);
 
     }
 

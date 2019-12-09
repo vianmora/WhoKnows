@@ -2,102 +2,80 @@ package com.example.whoknows2.model;
 
 public class Article {
 
-    private String id;
-    private String name;
-    private String author;
-    private String title;
-    private String description;
-    private String url;
-    private String urlToImage;
-    private String publishedAt;
-    private String content;
+    private Source mSource;
+    private String mAuthor;
+    private String mTitle;
+    private String mDescription;
+    private String mUrl;
+    private String mUrlToImage;
+    private String mPublishedAt;
+    private String mContent;
 
     public Article() {
     }
 
-    public Article(String id, String name, String author, String title, String description, String url, String urlToImage, String publishedAt, String content) {
-
-        this.id = id;
-        this.name = name;
-        this.author = author;
-        this.title = title;
-        this.description = description;
-        this.url = url;
-        this.urlToImage = urlToImage;
-        this.publishedAt = publishedAt;
-        this.content = content;
+    public Source getSource() {
+        return mSource;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setSource(Source source) {
+        mSource = source;
     }
 
     public String getAuthor() {
-        return author;
+        return mAuthor;
     }
 
     public void setAuthor(String author) {
-        this.author = author;
+        mAuthor = author;
     }
 
     public String getTitle() {
-        return title;
+        return mTitle;
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        mTitle = title;
     }
 
     public String getDescription() {
-        return description;
+        return mDescription;
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        mDescription = description;
     }
 
     public String getUrl() {
-        return url;
+        return mUrl;
     }
 
     public void setUrl(String url) {
-        this.url = url;
+        mUrl = url;
     }
 
     public String getUrlToImage() {
-        return urlToImage;
+        return mUrlToImage;
     }
 
     public void setUrlToImage(String urlToImage) {
-        this.urlToImage = urlToImage;
+        mUrlToImage = urlToImage;
     }
 
     public String getPublishedAt() {
-        return publishedAt;
+        return mPublishedAt;
     }
 
     public void setPublishedAt(String publishedAt) {
-        this.publishedAt = publishedAt;
+        mPublishedAt = publishedAt;
     }
 
     public String getContent() {
-        return content;
+        return mContent;
     }
 
     public void setContent(String content) {
-        this.content = content;
+        mContent = content;
     }
 }
 

@@ -19,6 +19,11 @@ public class Source {
         this.country = country;
     }
 
+    public Source(String id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public Source() {
     }
 
