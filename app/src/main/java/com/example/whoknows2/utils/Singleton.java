@@ -1,4 +1,4 @@
-package com.example.whoknows2.model;
+package com.example.whoknows2.utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
