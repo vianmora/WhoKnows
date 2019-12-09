@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.android.volley.Cache;
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     /* Views */
 
     private TextView JSONString;
+    private ProgressBar mProgressBar;
 
     /* variables */
     private LecteurFluxAsync mLecteurFlux;
@@ -78,6 +80,8 @@ public class MainActivity extends AppCompatActivity {
 
                             mCurrentFlux.fillArticlesArrayWhithJSONArray(response.getJSONArray("articles"));
 
+
+
                             JSONString.setText("reponse :" + mCurrentFlux.get_articlesArray().get(0).getTitle());
 
                         } catch (JSONException e) {
@@ -86,8 +90,8 @@ public class MainActivity extends AppCompatActivity {
                         }
 
 
-
-                        }
+                        Log.d("MON TAG", "bien recu");
+                    }
                 },
                 new Response.ErrorListener() {
                     public void onErrorResponse(VolleyError error) {
@@ -98,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
                 });
 
         Singleton.getInstance(this).addToRequestQueue(jr);
+        Log.d("MonTag", "Tag2");
 
     }
 
