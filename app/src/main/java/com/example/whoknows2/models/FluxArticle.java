@@ -2,6 +2,8 @@ package com.example.whoknows2.models;
 
 import android.util.Log;
 
+import com.example.whoknows2.adapters.ArticleAdapter;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,12 +15,14 @@ public class FluxArticle {
 
     private String _status;
     private int _totalResult;
-    private ArrayList<Article> _articlesArray;
+    private Source _source;
+    private ArrayList<ArrayList<Article>> _articlesArray;
 
     public FluxArticle() {
         this._status = null;
         this._totalResult = 0;
         this._articlesArray = new ArrayList<>();
+        this._source = null;
     }
 
     public String get_status() {
@@ -37,19 +41,31 @@ public class FluxArticle {
         this._totalResult = _totalResult;
     }
 
-    public void set_articlesArray(ArrayList<Article> _articlesArray) {
-        this._articlesArray = _articlesArray;
+    public ArrayList<Article> get_articlesArray(int page) {
+        return _articlesArray.get(page);
     }
 
-    public ArrayList<Article> get_articlesArray() {
-        return _articlesArray;
+    public Source get_source() {
+        return _source;
     }
 
-    public void fillArticlesArrayWhithJSONArray(JSONArray jsonArray) throws JSONException {
+    public void set_source(Source _source) {
+        this._source = _source;
+    }
+
+    public void fillArticlesArrayWhithJSONArray(JSONArray jsonArray, ArticleAdapter adapter) throws JSONException {
+
+        ArrayList<Article> articleArrayList = new ArrayList<>();
+
+        JSONObject obj = new JSONObject(jsonArray.getString(0));
+
+        if (get_source()==null){
+            this.set_source(new Source(obj.getJSONObject("source").getString("id"), obj.getJSONObject("source").getString("name")));
+        }
 
         for (int i = 0; i < jsonArray.length(); i++) {
 
-            JSONObject obj = new JSONObject(jsonArray.getString(i));
+            obj = new JSONObject(jsonArray.getString(i));
 
             Article article = new Article();
 
@@ -63,8 +79,17 @@ public class FluxArticle {
             article.setContent(obj.getString("content"));
 
             // On ajoute l'article au flux
-            _articlesArray.add(article);
+            articleArrayList.add(article);
 
         }
+        _articlesArray.add(articleArrayList);
+    }
+
+    public void fillWithJSONObject(JSONObject object, ArticleAdapter adapter) throws JSONException {
+        set_status(object.getString("status"));
+        set_totalResult(object.getInt("totalResults"));
+
+        fillArticlesArrayWhithJSONArray(object.getJSONArray("articles"), adapter);
+
     }
 }

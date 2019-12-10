@@ -1,19 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:padding="20dp"
+    android:layout_margin="30dp"
+    android:background="@drawable/background_item">
 
     <TextView
         android:id="@+id/item_flux_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/texte_par_default"/>
+        android:text="Titre de l'article"
+        android:textColor="@color/colorPrimary"
+        android:textSize="20sp"
+        android:layout_marginBottom="5dp"/>
     <TextView
         android:id="@+id/item_flux_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/texte_par_default"/>
+        android:textColor="@android:color/black"
+        android:text="@string/texte_par_default"
+        android:layout_below="@id/item_flux_title"/>
 
-</LinearLayout>
+</RelativeLayout>

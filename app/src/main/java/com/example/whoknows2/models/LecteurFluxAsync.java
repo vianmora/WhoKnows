@@ -41,7 +41,6 @@ public class LecteurFluxAsync extends AsyncTask<String, Void, JSONArray> {
     protected void onProgressUpdate(Void... values) {
         super.onProgressUpdate(values);
     }
-
     protected void onPostExecute(JSONArray articlesJSON) {
         mActivity.setContentView(R.layout.activity_flux);
     }
