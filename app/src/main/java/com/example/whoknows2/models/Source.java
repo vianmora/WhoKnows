@@ -1,6 +1,10 @@
 package com.example.whoknows2.models;
 
-public class Source {
+import androidx.annotation.NonNull;
+
+import java.io.Serializable;
+
+public class Source  implements Serializable {
     private String id;
     private String name;
     private String description;
@@ -25,6 +29,11 @@ public class Source {
     }
 
     public Source() {
+    }
+
+    @NonNull
+    public String toString() {
+        return this.getName();
     }
 
     public String getId() {

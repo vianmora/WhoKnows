@@ -11,14 +11,14 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class FluxArticle {
+public class FluxArticles {
 
     private String _status;
     private int _totalResult;
     private Source _source;
     private ArrayList<ArrayList<Article>> _articlesArray;
 
-    public FluxArticle() {
+    public FluxArticles() {
         this._status = null;
         this._totalResult = 0;
         this._articlesArray = new ArrayList<>();
@@ -53,7 +53,7 @@ public class FluxArticle {
         this._source = _source;
     }
 
-    public void fillArticlesArrayWhithJSONArray(JSONArray jsonArray, ArticleAdapter adapter) throws JSONException {
+    public void fillArticlesArrayWhithJSONArray(JSONArray jsonArray) throws JSONException {
 
         ArrayList<Article> articleArrayList = new ArrayList<>();
 
@@ -89,7 +89,7 @@ public class FluxArticle {
         set_status(object.getString("status"));
         set_totalResult(object.getInt("totalResults"));
 
-        fillArticlesArrayWhithJSONArray(object.getJSONArray("articles"), adapter);
+        fillArticlesArrayWhithJSONArray(object.getJSONArray("articles"));
 
     }
 }

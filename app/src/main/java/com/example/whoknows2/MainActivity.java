@@ -2,23 +2,18 @@ package com.example.whoknows2;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.widget.ListView;
-import android.widget.TextView;
 
-import com.android.volley.RequestQueue;
-
-import com.example.whoknows2.models.FluxArticle;
 import com.example.whoknows2.controllers.LecteurFluxAsync;
 
 public class MainActivity extends AppCompatActivity {
 
     /* variables */
-    private String mUrlSources_str = "http://newsapi.org/v2/sources?apiKey=d31f5fa5f03443dd8a1b9e3fde92ec34&language=fr";
-    private String mUrlFlux_str = "http://newsapi.org/v2/everything?apiKey=d31f5fa5f03443dd8a1b9e3fde92ec34&language=fr";
+    private String mUrl_str = "http://newsapi.org/v2/";
     private String mSource = "google-news-fr";
     private LecteurFluxAsync lecteurFluxAsync;
 
@@ -26,7 +21,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        lecteurFluxAsync = new LecteurFluxAsync(MainActivity.this, mUrlFlux_str, mSource);
+        ActionBar actionBar = getActionBar();
+        //actionBar.setTitle("WhoKnows");
+
+        lecteurFluxAsync = new LecteurFluxAsync(MainActivity.this, mUrl_str, mSource);
+
 
     }
 
@@ -41,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        lecteurFluxAsync = new LecteurFluxAsync(MainActivity.this, mUrlFlux_str, mSource);
+        lecteurFluxAsync = new LecteurFluxAsync(MainActivity.this, mUrl_str, mSource);
 
     }
 
