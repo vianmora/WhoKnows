@@ -48,6 +48,9 @@ public class LecteurFluxAsync{
     private FluxArticle mCurrentFlux;
     private int mPage = 1;
 
+    private Toast toast;
+    private boolean load_bool;
+
 
     /* constructeur */
 
@@ -80,6 +83,7 @@ public class LecteurFluxAsync{
                         try {
                             mCurrentFlux.fillWithJSONObject(response, null);
                             Log.d("TAG", "premiere requete");
+                            load_bool = false;
 
                             final ArticleAdapter mArticleAdapter = new ArticleAdapter(mActivity.getApplicationContext(), mCurrentFlux.get_articlesArray(mPage-1));
 
@@ -94,56 +98,77 @@ public class LecteurFluxAsync{
                                 }
 
                                 public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                                    if (firstVisibleItem + visibleItemCount > totalItemCount-1 && totalItemCount == mPage*20 && totalItemCount<100){
+                                    if (firstVisibleItem + visibleItemCount > totalItemCount-1 && !load_bool){
 
-                                        Log.d("TAG", firstVisibleItem+"&"+visibleItemCount+"&"+totalItemCount);
-                                        mPage++;
+                                        if (totalItemCount >= 100){
+                                            toast = Toast.makeText(mActivity.getApplicationContext(), "vous avez atteint la limite des 100 articles disponibles", Toast.LENGTH_SHORT);
+                                            toast.show();
+                                        }
+                                        else if (totalItemCount == mCurrentFlux.get_totalResult()){
+                                            toast = Toast.makeText(mActivity.getApplicationContext(), "vous avez atteint la fin du fil", Toast.LENGTH_SHORT);
+                                            toast.show();
+                                        }
+                                        else{
+                                            Log.d("TAG", firstVisibleItem+"&"+visibleItemCount+"&"+totalItemCount+"&"+mCurrentFlux.get_totalResult());
+                                            load_bool = true;
+                                            mPage++;
 
-                                        JsonObjectRequest new_jr = new JsonObjectRequest(
-                                                Request.Method.GET,
-                                                mUrlFlux_str+"&sources="+source_str+"&page="+(mPage),
-                                                null,
-                                                new Response.Listener<JSONObject>() {
+                                            JsonObjectRequest new_jr = new JsonObjectRequest(
+                                                    Request.Method.GET,
+                                                    mUrlFlux_str+"&sources="+source_str+"&page="+(mPage),
+                                                    null,
+                                                    new Response.Listener<JSONObject>() {
 
-                                                    @RequiresApi(api = Build.VERSION_CODES.M)
-                                                    public void onResponse(JSONObject response) {
+                                                        @RequiresApi(api = Build.VERSION_CODES.M)
+                                                        public void onResponse(JSONObject response) {
 
-                                                        try {
-                                                            mCurrentFlux.fillWithJSONObject(response, null);
-                                                            mArticleAdapter.addAll(mCurrentFlux.get_articlesArray(mPage-1));
+                                                            load_bool = false;
+
+                                                            try {
+                                                                mCurrentFlux.fillWithJSONObject(response, null);
+                                                                mArticleAdapter.addAll(mCurrentFlux.get_articlesArray(mPage-1));
 
 
-                                                        } catch (JSONException e) {
-                                                            e.printStackTrace();
+                                                            } catch (JSONException e) {
+                                                                e.printStackTrace();
+                                                            }
+
                                                         }
+                                                    },
+                                                    new Response.ErrorListener() {
+                                                        public void onErrorResponse(VolleyError error) {
 
-                                                    }
-                                                },
-                                                new Response.ErrorListener() {
-                                                    public void onErrorResponse(VolleyError error) {
+                                                            new AlertDialog.Builder(mActivity)
+                                                                    .setTitle("Connection lente")
+                                                                    .setMessage("Nous sommes désolé :( nous avons du mal à nous connecter au réseau...")
 
-                                                        new AlertDialog.Builder(mActivity)
-                                                                .setTitle("Connection lente")
-                                                                .setMessage("Nous sommes désolé :( nous avons du mal à nous connecter au réseau...")
+                                                                    .setPositiveButton("réessayer ?", new DialogInterface.OnClickListener() {
+                                                                        public void onClick(DialogInterface dialog, int which) {
+                                                                            Toast mToast = Toast.makeText(mActivity.getApplicationContext(), "problème de connection...", Toast.LENGTH_LONG);
 
-                                                                .setPositiveButton("réessayer ?", new DialogInterface.OnClickListener() {
-                                                                    public void onClick(DialogInterface dialog, int which) {
-                                                                        Toast mToast = Toast.makeText(mActivity.getApplicationContext(), "problème de connection...", Toast.LENGTH_LONG);
+                                                                            mActivity.recreate();
+                                                                        }
+                                                                    })
+                                                                    .show();
+                                                            error.getStackTrace();
+                                                        }
+                                                    });
 
-                                                                        mActivity.recreate();
-                                                                    }
-                                                                })
-                                                                .show();
-                                                        error.getStackTrace();
-                                                    }
-                                                });
-
-                                        Singleton.getInstance(mActivity.getApplicationContext()).addToRequestQueue(new_jr);
+                                            Singleton.getInstance(mActivity.getApplicationContext()).addToRequestQueue(new_jr);
+                                        }
                                     }
                                 }
                             });
 
                             mSourceTextView.setText(mCurrentFlux.get_source().getName());
+
+                            mLogoImageView.setOnClickListener(new View.OnClickListener() {
+                                public void onClick(View v) {
+                                    Intent change_source = new Intent(mActivity.getApplicationContext(), MainActivity.class);
+                                    change_source.putExtra("source", "le-monde");
+                                    mActivity.startActivity(change_source);
+                                }
+                            });
 
                         } catch (JSONException e) {
                             //e.printStackTrace();
