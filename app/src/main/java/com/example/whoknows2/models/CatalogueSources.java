@@ -41,9 +41,9 @@ public class CatalogueSources {
     }
 
     public void fillWithJSONObject(JSONObject object) throws JSONException {
-        setStatus(object.getString("status"));
 
-        fillArticlesArrayWhithJSONArray(object.getJSONArray("articles"));
+        setStatus(object.getString("status"));
+        fillArticlesArrayWhithJSONArray(object.getJSONArray("sources"));
 
     }
 

@@ -21,26 +21,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ActionBar actionBar = getActionBar();
-        //actionBar.setTitle("WhoKnows");
-
-        lecteurFluxAsync = new LecteurFluxAsync(MainActivity.this, mUrl_str, mSource);
-
-
-    }
-
-    protected void onStart() {
-
-        super.onStart();
-
         Intent intent = getIntent();
         if (intent != null){
             if (intent.hasExtra("source")){
                 mSource = intent.getStringExtra("source");
             }
         }
-
         lecteurFluxAsync = new LecteurFluxAsync(MainActivity.this, mUrl_str, mSource);
+
 
     }
 

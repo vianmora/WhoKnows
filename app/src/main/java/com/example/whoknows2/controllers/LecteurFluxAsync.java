@@ -60,6 +60,7 @@ public class LecteurFluxAsync{
 
     private Toast toast;
     private boolean load_bool;
+    private String tag = "TAG PERSO";
 
 
     /* constructeur */
@@ -78,7 +79,10 @@ public class LecteurFluxAsync{
 
     public void load_menu(){
 
-        if (mCatalogue.getCatalogue()==null){
+
+        if (mCatalogue.getCatalogue().size()==0){
+
+
             JsonObjectRequest jr = new JsonObjectRequest(
                     Request.Method.GET,
                     mUrlSource_str,
@@ -113,11 +117,24 @@ public class LecteurFluxAsync{
     }
 
     private void set_menu(){
-        SourceAdapter adapter = new SourceAdapter(mActivity.getApplicationContext(), mCatalogue.getCatalogue());
-
         Spinner spinner = (Spinner) mActivity.findViewById(R.id.activity_flux_spinner);
 
-        adapter.setDropDownViewResource(R.layout.item_spinner);
+        ArrayList<String> sources = new ArrayList<>();
+
+        ArrayList<Source> s1 = mCatalogue.getCatalogue();
+
+        for(int i = 0; i < s1.size(); i++){
+            sources.add(s1.get(i).getName());
+        }
+
+        //CharSequence[] sourceList = (CharSequence[]) s1.toArray();
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_dropdown_item, sources);
+
+        Log.d("Tag", mCatalogue.getCatalogue().get(0).getName()+ sources);
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -147,6 +164,7 @@ public class LecteurFluxAsync{
                     public void onResponse(JSONObject response) {
 
                         mActivity.setContentView(R.layout.activity_flux);
+                        load_menu();
 
                         mFluxListView = (ListView) mActivity.findViewById(R.id.activity_flux_listview);
                         mSourceTextView = (TextView) mActivity.findViewById(R.id.activity_flux_source);
