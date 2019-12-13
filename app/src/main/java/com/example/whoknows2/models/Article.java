@@ -1,6 +1,9 @@
 package com.example.whoknows2.models;
 
-public class Article {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Article implements Parcelable {
 
     private Source mSource;
     private String mAuthor;
@@ -13,6 +16,29 @@ public class Article {
 
     public Article() {
     }
+
+    protected Article(Parcel in) {
+        mSource = in.readParcelable(Source.class.getClassLoader());
+        mAuthor = in.readString();
+        mTitle = in.readString();
+        mDescription = in.readString();
+        mUrl = in.readString();
+        mUrlToImage = in.readString();
+        mPublishedAt = in.readString();
+        mContent = in.readString();
+    }
+
+    public static final Creator<Article> CREATOR = new Creator<Article>() {
+        @Override
+        public Article createFromParcel(Parcel in) {
+            return new Article(in);
+        }
+
+        @Override
+        public Article[] newArray(int size) {
+            return new Article[size];
+        }
+    };
 
     public Source getSource() {
         return mSource;
@@ -76,6 +102,21 @@ public class Article {
 
     public void setContent(String content) {
         mContent = content;
+    }
+
+    public int describeContents() {
+        return 0;
+    }
+
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeParcelable(mSource, flags);
+        dest.writeString(mAuthor);
+        dest.writeString(mTitle);
+        dest.writeString(mDescription);
+        dest.writeString(mUrl);
+        dest.writeString(mUrlToImage);
+        dest.writeString(mPublishedAt);
+        dest.writeString(mContent);
     }
 }
 

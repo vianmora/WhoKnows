@@ -25,6 +25,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.whoknows2.ArticleActivity;
 import com.example.whoknows2.MainActivity;
 import com.example.whoknows2.R;
 import com.example.whoknows2.adapters.ArticleAdapter;
@@ -137,7 +138,7 @@ public class LecteurFluxAsync{
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (!parent.getItemAtPosition(position).toString().equals("sources")){
                     Intent change_source = new Intent(mActivity.getApplicationContext(), MainActivity.class);
-                    change_source.putExtra("source", (Parcelable) mCatalogue.getCatalogue().get(position));
+                    change_source.putExtra("source", (Parcelable) mCatalogue.getCatalogue().get(position-1));
                     mActivity.startActivity(change_source);
                 }
 
@@ -145,13 +146,6 @@ public class LecteurFluxAsync{
 
             public void onNothingSelected(AdapterView<?> parent) {
             }
-
-            /*public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent change_source = new Intent(mActivity.getApplicationContext(), MainActivity.class);
-                change_source.putExtra("source", mCatalogue.getCatalogue().get(position).getId());
-
-                mActivity.startActivity(change_source);
-            }*/
         });
     }
 
@@ -256,11 +250,13 @@ public class LecteurFluxAsync{
 
                             mSourceTextView.setText(mCurrentFlux.get_source().getName());
 
-                            mLogoImageView.setOnClickListener(new View.OnClickListener() {
-                                public void onClick(View v) {
-                                    Intent change_source = new Intent(mActivity.getApplicationContext(), MainActivity.class);
-                                    change_source.putExtra("source", "le-monde");
-                                    mActivity.startActivity(change_source);
+                            mFluxListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                    Intent toArticle = new Intent(mActivity.getApplicationContext(), ArticleActivity.class);
+                                    int page = (int) position/20;
+                                    int numero = position - 20*page;
+                                    toArticle.putExtra("article", (Parcelable) mCurrentFlux.get_articlesArray(page).get(numero));
+                                    mActivity.startActivity(toArticle);
                                 }
                             });
 
