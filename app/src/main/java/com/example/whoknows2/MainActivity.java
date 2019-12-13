@@ -9,12 +9,13 @@ import android.view.Menu;
 import android.view.MenuInflater;
 
 import com.example.whoknows2.controllers.LecteurFluxAsync;
+import com.example.whoknows2.models.Source;
 
 public class MainActivity extends AppCompatActivity {
 
     /* variables */
     private String mUrl_str = "http://newsapi.org/v2/";
-    private String mSource = "google-news-fr";
+    private Source mSource;
     private LecteurFluxAsync lecteurFluxAsync;
 
     @Override
@@ -22,9 +23,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         Intent intent = getIntent();
+
+        mSource = new Source("google-news-fr", "Google News (France)");
+
         if (intent != null){
             if (intent.hasExtra("source")){
-                mSource = intent.getStringExtra("source");
+                mSource = intent.getParcelableExtra("source");
             }
         }
         lecteurFluxAsync = new LecteurFluxAsync(MainActivity.this, mUrl_str, mSource);

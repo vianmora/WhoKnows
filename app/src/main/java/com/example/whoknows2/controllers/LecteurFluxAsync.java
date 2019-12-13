@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
@@ -14,6 +15,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -47,13 +49,12 @@ public class LecteurFluxAsync{
     private ListView mFluxListView;
     private TextView mSourceTextView;
     private ImageView mLogoImageView;
+    private Spinner spinner;
 
     /* variable */
 
     private AppCompatActivity mActivity;
     private RequestQueue mRequestQueue;
-    private String mUrlFlux_str;
-    private final String mUrlSource_str;
     private FluxArticles mCurrentFlux;
     private int mPage = 1;
     private CatalogueSources mCatalogue;
@@ -61,28 +62,33 @@ public class LecteurFluxAsync{
     private Toast toast;
     private boolean load_bool;
     private String tag = "TAG PERSO";
+    private String mUrlFlux_str;
+    private String mUrlSource_str;
+    private Source mCurrentSource;
 
 
     /* constructeur */
 
-    public LecteurFluxAsync(AppCompatActivity activity, String url, String source_str){
+    public LecteurFluxAsync(AppCompatActivity activity, String url, Source current_source){
         mActivity = activity;
-        mUrlFlux_str = url+"everything?apiKey=d31f5fa5f03443dd8a1b9e3fde92ec34&language=fr";
-        mUrlSource_str = url + "sources?apiKey=d31f5fa5f03443dd8a1b9e3fde92ec34&language=fr";
         mCurrentFlux = new FluxArticles();
         mCatalogue = new CatalogueSources();
+
+        mUrlFlux_str = url+"everything?apiKey=d31f5fa5f03443dd8a1b9e3fde92ec34&language=fr";
+        mUrlSource_str = url + "sources?apiKey=d31f5fa5f03443dd8a1b9e3fde92ec34&language=fr";
+
+        mCurrentSource = current_source;
+
         mRequestQueue = Singleton.getInstance(mActivity.getApplicationContext()).getRequestQueue();
         mActivity.setContentView(R.layout.activity_main);
 
-        lireFlux(source_str);
+        Log.d(tag, "1_ source : "+current_source.getName());
+        lireFlux();
     }
 
     public void load_menu(){
 
-
         if (mCatalogue.getCatalogue().size()==0){
-
-
             JsonObjectRequest jr = new JsonObjectRequest(
                     Request.Method.GET,
                     mUrlSource_str,
@@ -94,11 +100,10 @@ public class LecteurFluxAsync{
                             try {
                                 mCatalogue.fillWithJSONObject(response);
                                 set_menu();
-
-                            } catch (JSONException e) {
+                            }
+                            catch (JSONException e) {
                                 e.printStackTrace();
                             }
-
                         }
                     },
                     new Response.ErrorListener() {
@@ -117,51 +122,50 @@ public class LecteurFluxAsync{
     }
 
     private void set_menu(){
-        Spinner spinner = (Spinner) mActivity.findViewById(R.id.activity_flux_spinner);
 
-        ArrayList<String> sources = new ArrayList<>();
+        spinner = (Spinner) mActivity.findViewById(R.id.activity_flux_spinner);
 
-        ArrayList<Source> s1 = mCatalogue.getCatalogue();
+        ArrayList<String> sources = mCatalogue.getCatalogue_str();
 
-        for(int i = 0; i < s1.size(); i++){
-            sources.add(s1.get(i).getName());
-        }
-
-        //CharSequence[] sourceList = (CharSequence[]) s1.toArray();
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_dropdown_item, sources);
-
-        Log.d("Tag", mCatalogue.getCatalogue().get(0).getName()+ sources);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),R.layout.item_spinner, sources);
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
+
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                                    /*actualSource = sl.get(position);
-                                    actualPage = 1;
-                                    loadedPage = 0;
-                                    frag.clearArticles();
-                                    fetchNews();*/
+                if (!parent.getItemAtPosition(position).toString().equals("sources")){
+                    Intent change_source = new Intent(mActivity.getApplicationContext(), MainActivity.class);
+                    change_source.putExtra("source", (Parcelable) mCatalogue.getCatalogue().get(position));
+                    mActivity.startActivity(change_source);
+                }
+
             }
 
-            @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
+
+            /*public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent change_source = new Intent(mActivity.getApplicationContext(), MainActivity.class);
+                change_source.putExtra("source", mCatalogue.getCatalogue().get(position).getId());
+
+                mActivity.startActivity(change_source);
+            }*/
         });
     }
 
-    public void lireFlux(final String source_str){
+    public void lireFlux(){
         JsonObjectRequest jr = new JsonObjectRequest(
                 Request.Method.GET,
-                mUrlFlux_str+"&sources="+source_str,
+                mUrlFlux_str+"&sources="+mCurrentSource.getId(),
                 null,
                 new Response.Listener<JSONObject>(){
 
                     @RequiresApi(api = Build.VERSION_CODES.M)
                     public void onResponse(JSONObject response) {
+
+                        Log.d(tag, "2_ JSON chargé");
 
                         mActivity.setContentView(R.layout.activity_flux);
                         load_menu();
@@ -205,7 +209,7 @@ public class LecteurFluxAsync{
 
                                             JsonObjectRequest new_jr = new JsonObjectRequest(
                                                     Request.Method.GET,
-                                                    mUrlFlux_str+"&sources="+source_str+"&page="+(mPage),
+                                                    mUrlFlux_str+"&sources="+mCurrentSource.getId()+"&page="+(mPage),
                                                     null,
                                                     new Response.Listener<JSONObject>() {
 

@@ -1,21 +1,23 @@
 package com.example.whoknows2.models;
 
-import com.example.whoknows2.adapters.ArticleAdapter;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.security.Signature;
 import java.util.ArrayList;
 
 public class CatalogueSources {
 
     private String mStatus;
     private ArrayList<Source> mCatalogue;
+    private ArrayList<String> mCatalogue_str;
 
     public CatalogueSources() {
         mStatus = null;
         mCatalogue = new ArrayList<>();
+        mCatalogue_str = new ArrayList<>();
+        mCatalogue_str.add("sources");
     }
 
     public void fillArticlesArrayWhithJSONArray(JSONArray jsonArray) throws JSONException {
@@ -37,6 +39,7 @@ public class CatalogueSources {
             // On ajoute l'article au flux
             mCatalogue.add(source);
 
+            mCatalogue_str.add(obj.getString("name"));
         }
     }
 
@@ -60,4 +63,9 @@ public class CatalogueSources {
     public ArrayList<Source> getCatalogue() {
         return mCatalogue;
     }
+
+    public ArrayList<String> getCatalogue_str(){
+        return mCatalogue_str;
+    }
+
 }
