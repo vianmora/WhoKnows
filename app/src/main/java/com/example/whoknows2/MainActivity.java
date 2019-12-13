@@ -29,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
         }
         lecteurFluxAsync = new LecteurFluxAsync(MainActivity.this, mUrl_str, mSource);
 
-
     }
 
     public boolean onCreateOptionsMenu(Menu menu){
