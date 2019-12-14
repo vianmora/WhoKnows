@@ -9,11 +9,13 @@ import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.whoknows2.models.Article;
 import com.example.whoknows2.models.FluxArticles;
+import com.squareup.picasso.Picasso;
 
 public class ArticleActivity extends AppCompatActivity {
 
@@ -53,8 +55,23 @@ public class ArticleActivity extends AppCompatActivity {
         TextView mSource_txt = (TextView) findViewById(R.id.activity_article_source_txt);
         mSource_txt.setText(article.getSource().getName());
 
-        TextView mDescription_txt = (TextView) findViewById(R.id.activity_article_description_txt);
-        mDescription_txt.setText(article.getDescription());
+        final TextView mContent_txt = (TextView) findViewById(R.id.activity_article_content_txt);
+
+        if (article.getContent().equals("null")){
+            mContent_txt.setText(article.getDescription());
+        }
+        else {
+            mContent_txt.setText(article.getContent());
+        }
+
+        ImageView mImage_img = (ImageView) findViewById(R.id.activity_article_image);
+        if (!article.getUrlToImage().equals("null")){
+            Picasso.with(getApplicationContext()).load(article.getUrlToImage()).fit().centerInside().into(mImage_img);
+        }
+        else{
+            mImage_img.setVisibility(View.GONE);
+        }
+        Log.d("tag", article.getUrlToImage());
 
 
         Button mPrecedent_btn = (Button) findViewById(R.id.activity_article_precedent_btn);
@@ -95,6 +112,7 @@ public class ArticleActivity extends AppCompatActivity {
                 startActivity(toFlux);
             }
         });
+
 
         Button mWeb_btn = (Button) findViewById(R.id.activity_article_web_btn);
         mWeb_btn.setOnClickListener(new View.OnClickListener() {

@@ -1,27 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="20dp"
+    android:orientation="vertical"
     android:layout_margin="30dp"
+    android:padding="20dp"
     android:background="@drawable/background_item">
 
-    <TextView
-        android:id="@+id/item_flux_title"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Titre de l'article"
-        android:textColor="@color/colorPrimary"
-        android:textSize="20sp"
-        android:layout_marginBottom="5dp"/>
-    <TextView
-        android:id="@+id/item_flux_description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@android:color/black"
-        android:text="@string/texte_par_default"
-        android:layout_below="@id/item_flux_title"/>
+        android:orientation="horizontal">
 
-</RelativeLayout>
+        <ImageView
+            android:id="@+id/item_flux_icone_left_img"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_gravity="center_vertical"
+            android:visibility="gone"
+            />
+
+        <TextView
+            android:id="@+id/item_flux_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Titre de l'article et plus"
+            android:textColor="@color/colorPrimary"
+            android:textSize="15sp"
+            android:layout_marginBottom="5dp"
+            android:layout_toEndOf="@id/item_flux_icone_left_img"
+            android:layout_toStartOf="@id/item_flux_icone_right_img"/>
+        <TextView
+            android:id="@+id/item_flux_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="15sp"
+            android:text="date"
+            android:layout_below="@id/item_flux_title"
+            android:layout_toEndOf="@id/item_flux_icone_left_img"
+            android:layout_toStartOf="@id/item_flux_icone_right_img"/>
+
+        <ImageView
+            android:id="@+id/item_flux_icone_right_img"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_gravity="center_vertical"
+            android:layout_alignParentEnd="true"
+            android:visibility="gone"/>
+
+    </RelativeLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/item_flux_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            android:textSize="15sp"
+            android:text="description"/>
+
+    </LinearLayout>
+
+
+
+
+
+</LinearLayout>

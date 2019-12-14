@@ -8,8 +8,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 public class FluxArticles {
 
@@ -20,8 +24,8 @@ public class FluxArticles {
 
     public FluxArticles() {
         this._status = null;
-        this._totalResult = 0;
-        this._articlesArray = new ArrayList<>();
+        _totalResult = 0;
+        _articlesArray = new ArrayList<>();
         this._source = null;
     }
 
@@ -75,6 +79,18 @@ public class FluxArticles {
 
             obj = new JSONObject(jsonArray.getString(i));
 
+            String date_str = null;
+            try {
+                SimpleDateFormat oldFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'",Locale.FRANCE);
+                Date date = oldFormat.parse(obj.getString("publishedAt"));
+
+                SimpleDateFormat newFormat = new SimpleDateFormat("EEE dd MMMM",Locale.FRANCE);
+                date_str = newFormat.format(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+
             Article article = new Article();
 
             article.setSource(new Source(obj.getJSONObject("source").getString("id"), obj.getJSONObject("source").getString("name")));
@@ -83,7 +99,7 @@ public class FluxArticles {
             article.setDescription(obj.getString("description"));
             article.setUrl(obj.getString("url"));
             article.setUrlToImage(obj.getString("urlToImage"));
-            article.setPublishedAt(obj.getString("publishedAt"));
+            article.setPublishedAt(date_str);
             article.setContent(obj.getString("content"));
             article.setId(_idArticle);
 

@@ -21,7 +21,7 @@ public class FluxActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mSource = new Source("google-news-fr", "Google News (France)");
+        mSource = new Source("liberation", "Libération");
 
         Intent intent = getIntent();
 

@@ -139,10 +139,12 @@ public class LecteurFluxAsync{
 
         try {
             mCurrentFlux.fillWithJSONObject(response, null);
-            Log.d("TAG", "premiere requete");
+
+            Log.d("TAG", "début adaptation");
             load_bool = false;
 
-            final ArticleAdapter mArticleAdapter = new ArticleAdapter(mActivity.getApplicationContext(), mCurrentFlux.get_articlesArray(mPage-1));
+            final ArticleAdapter mArticleAdapter = new ArticleAdapter(mActivity.getApplicationContext(), FluxArticles.get_articlesArray(mPage-1));
+
 
             mFluxListView.setAdapter(mArticleAdapter);
 
@@ -161,12 +163,12 @@ public class LecteurFluxAsync{
                             toast = Toast.makeText(mActivity.getApplicationContext(), "vous avez atteint la limite des 100 articles disponibles", Toast.LENGTH_SHORT);
                             toast.show();
                         }
-                        else if (totalItemCount == mCurrentFlux.get_totalResult()){
+                        else if (totalItemCount == FluxArticles.get_totalResult()){
                             toast = Toast.makeText(mActivity.getApplicationContext(), "vous avez atteint la fin du fil", Toast.LENGTH_SHORT);
                             toast.show();
                         }
                         else{
-                            Log.d("TAG", firstVisibleItem+"&"+visibleItemCount+"&"+totalItemCount+"&"+mCurrentFlux.get_totalResult());
+                            Log.d("TAG", firstVisibleItem+"&"+visibleItemCount+"&"+totalItemCount+"&"+FluxArticles.get_totalResult());
                             load_bool = true;
                             mPage++;
 

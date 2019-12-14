@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebView;
 
+import com.example.whoknows2.controllers.MyWebViewClient;
+
 public class WebActivity extends AppCompatActivity {
 
     @Override
@@ -21,6 +23,8 @@ public class WebActivity extends AppCompatActivity {
                 String mUrlArticle = intent.getStringExtra("url");
 
                 WebView webView =(WebView)findViewById(R.id.activity_web_webview);
+
+                webView.setWebViewClient(new MyWebViewClient(this));
 
                 webView.getSettings().setLoadsImagesAutomatically(true);
                 webView.getSettings().setJavaScriptEnabled(true);
