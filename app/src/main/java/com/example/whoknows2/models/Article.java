@@ -13,9 +13,11 @@ public class Article implements Parcelable {
     private String mUrlToImage;
     private String mPublishedAt;
     private String mContent;
+    private int mId;
 
     public Article() {
     }
+
 
     protected Article(Parcel in) {
         mSource = in.readParcelable(Source.class.getClassLoader());
@@ -26,6 +28,7 @@ public class Article implements Parcelable {
         mUrlToImage = in.readString();
         mPublishedAt = in.readString();
         mContent = in.readString();
+        mId = in.readInt();
     }
 
     public static final Creator<Article> CREATOR = new Creator<Article>() {
@@ -104,6 +107,15 @@ public class Article implements Parcelable {
         mContent = content;
     }
 
+    public int getId() {
+        return mId;
+    }
+
+    public void setId(int id) {
+        mId = id;
+    }
+
+
     public int describeContents() {
         return 0;
     }
@@ -117,6 +129,7 @@ public class Article implements Parcelable {
         dest.writeString(mUrlToImage);
         dest.writeString(mPublishedAt);
         dest.writeString(mContent);
+        dest.writeInt(mId);
     }
 }
 

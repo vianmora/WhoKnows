@@ -10,8 +10,8 @@ import java.util.ArrayList;
 public class CatalogueSources {
 
     private String mStatus;
-    private ArrayList<Source> mCatalogue;
-    private ArrayList<String> mCatalogue_str;
+    private static ArrayList<Source> mCatalogue;
+    private static ArrayList<String> mCatalogue_str = null;
 
     public CatalogueSources() {
         mStatus = null;
@@ -60,11 +60,11 @@ public class CatalogueSources {
         mStatus = status;
     }
 
-    public ArrayList<Source> getCatalogue() {
+    public static ArrayList<Source> getCatalogue() {
         return mCatalogue;
     }
 
-    public ArrayList<String> getCatalogue_str(){
+    public static ArrayList<String> getCatalogue_str(){
         return mCatalogue_str;
     }
 

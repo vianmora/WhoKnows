@@ -14,9 +14,9 @@ import java.util.HashMap;
 public class FluxArticles {
 
     private String _status;
-    private int _totalResult;
+    private static int _totalResult;
     private Source _source;
-    private ArrayList<ArrayList<Article>> _articlesArray;
+    private static ArrayList<ArrayList<Article>> _articlesArray;
 
     public FluxArticles() {
         this._status = null;
@@ -33,7 +33,7 @@ public class FluxArticles {
         this._status = _status;
     }
 
-    public int get_totalResult() {
+    public static int get_totalResult() {
         return _totalResult;
     }
 
@@ -41,8 +41,14 @@ public class FluxArticles {
         this._totalResult = _totalResult;
     }
 
-    public ArrayList<Article> get_articlesArray(int page) {
+    public static ArrayList<Article> get_articlesArray(int page) {
         return _articlesArray.get(page);
+    }
+
+    public static Article getArticleById(int id){
+        int page = (int) id/20;
+        int sousId = id - 20*page;
+        return _articlesArray.get(page).get(sousId);
     }
 
     public Source get_source() {
@@ -53,7 +59,9 @@ public class FluxArticles {
         this._source = _source;
     }
 
-    public void fillArticlesArrayWhithJSONArray(JSONArray jsonArray) throws JSONException {
+    public void fillArticlesArrayWithJSONArray(JSONArray jsonArray) throws JSONException {
+
+        int _idArticle = _articlesArray.size()*20;
 
         ArrayList<Article> articleArrayList = new ArrayList<>();
 
@@ -77,9 +85,11 @@ public class FluxArticles {
             article.setUrlToImage(obj.getString("urlToImage"));
             article.setPublishedAt(obj.getString("publishedAt"));
             article.setContent(obj.getString("content"));
+            article.setId(_idArticle);
 
             // On ajoute l'article au flux
             articleArrayList.add(article);
+            _idArticle++;
 
         }
         _articlesArray.add(articleArrayList);
@@ -89,7 +99,7 @@ public class FluxArticles {
         set_status(object.getString("status"));
         set_totalResult(object.getInt("totalResults"));
 
-        fillArticlesArrayWhithJSONArray(object.getJSONArray("articles"));
+        fillArticlesArrayWithJSONArray(object.getJSONArray("articles"));
 
     }
 }
